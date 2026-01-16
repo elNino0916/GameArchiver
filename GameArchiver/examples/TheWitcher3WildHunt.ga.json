@@ -36,4 +36,26 @@
   "ManualExists": true,
   "ManualPath": "Manual.pdf",
   "ArchiveNameOverride": "The Witcher 3 Setup" // <- If your archive is called YourGameArchive.7z, enter YourGameArchive.7z here.
+  "CustomSteps": [
+    {
+      "Type": "RunMsi",
+      "Path": "requirements\\vcredist_x64.msi",
+      "Description": "Visual C++ Redistributable"
+    },
+    {
+      "Type": "RunExe",
+      "Path": "requirements\\DirectX\\DXSETUP.exe",
+      "Description": "DirectX Runtime"
+    },
+    {
+      "Type": "OpenFile",
+      "Path": "ReadMe.txt",
+      "Description": "Release Notes"
+    },
+    {
+      "Type": "OpenFolder",
+      "Path": "Mods",
+      "Description": "Mods Folder"
+    }
+  ]
 }
