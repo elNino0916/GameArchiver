@@ -24,7 +24,7 @@ namespace GameArchiver
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            catch { /* ignore */ }
+            catch { /* ignore (why would it even fail)*/ }
         }
 
         public static void WriteBanner()
