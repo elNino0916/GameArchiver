@@ -1,6 +1,3 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: .NET
 
 on:
@@ -24,18 +21,21 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build (Release)
+      run: dotnet build --no-restore -c Release
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Test (Release)
+      run: dotnet test --no-build -c Release --verbosity normal
 
-    - name: Publish
-      run: dotnet publish --no-build -c Release -o publish
+    - name: Publish (Release)
+      run: dotnet publish .\GameArchiver\GameArchiver.csproj --no-build -c Release
 
-    - name: Zip build artifacts
+    - name: Zip published artifacts
+      shell: pwsh
       run: |
-        Compress-Archive -Path publish/* -DestinationPath build-artifacts.zip
+        $pub = "GameArchiver\bin\Release\net10.0\publish"
+        if (!(Test-Path $pub)) { throw "Publish folder not found: $pub" }
+        Compress-Archive -Path "$pub\*" -DestinationPath "build-artifacts.zip" -Force
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
