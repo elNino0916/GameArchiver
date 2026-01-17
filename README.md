@@ -61,7 +61,7 @@ If a game is **not DRM-free**, it is **out of scope**.
 To preserve your **legally owned, DRM-free games**, you must create a **manifest file** describing the game and its installer or archive.
 
 A complete example manifest is provided here:  
-👉 https://github.com/elNino0916/GameArchiver/blob/master/GameArchiver/examples/TheWitcher3WildHunt.ga.json
+👉 https://github.com/elNino0916/GameArchiver/blob/master/GameArchiver/examples/example.ga.json
 
 This example documents all supported fields and available options.
 
