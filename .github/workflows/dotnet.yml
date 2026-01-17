@@ -30,15 +30,9 @@ jobs:
     - name: Publish (Release)
       run: dotnet publish .\GameArchiver\GameArchiver.csproj --no-build -c Release
 
-    - name: Zip published artifacts
-      shell: pwsh
-      run: |
-        $pub = "GameArchiver\bin\Release\net10.0\publish"
-        if (!(Test-Path $pub)) { throw "Publish folder not found: $pub" }
-        Compress-Archive -Path "$pub\*" -DestinationPath "build-artifacts.zip" -Force
-
-    - name: Upload build artifacts
+    - name: Upload published artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
-        path: build-artifacts.zip
+        path: GameArchiver\bin\Release\net10.0\publish\
+        if-no-files-found: error
