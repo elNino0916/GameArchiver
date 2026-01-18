@@ -1,6 +1,6 @@
 [![.NET](https://github.com/elNino0916/GameArchiver/actions/workflows/dotnet.yml/badge.svg)](https://github.com/elNino0916/GameArchiver/actions/workflows/dotnet.yml)
 
-<img width="560" height="90" alt="image" src="https://github.com/user-attachments/assets/f330d87a-5580-43b0-bb58-ec323a2841d6" />
+<img width="1073" height="110" alt="image" src="https://github.com/user-attachments/assets/bec27f89-bc74-45d4-a725-4a5e1516d9b8" />
 
 **GameArchiver** is a **manifest-driven Windows archiving and installer framework** for preserving **legally owned, DRM-free PC games**.
 
