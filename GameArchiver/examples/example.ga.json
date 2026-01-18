@@ -22,12 +22,12 @@
   "SetupDesc": "Offline Installer",
   "GAManifestVersion": "2.2.5",
   "GameVersion": "4.04",
-  "GameName": "The Witcher 3: Wild Hunt Complete Edition",
-  "ShortName": "TW3",
+  "GameName": "Game Name",
+  "ShortName": "GN",
   "Publisher": "Publisher",
   "DeveloperShortName": "PBL",
   "Developer": "Developer",
-  "CopyrightYear": "2022",
+  "CopyrightYear": "2026",
   "TrademarkOwner": "Trademark",
   "TrademarkExists": true,
   "InstallDir": "C:\\GameArchiver\\Publisher\\Game\\",
@@ -35,7 +35,7 @@
   "MainExeName": "game.exe",
   "ManualExists": true,
   "ManualPath": "Manual.pdf",
-  "ArchiveNameOverride": "The Witcher 3 Setup" // <- If your archive is called YourGameArchive.7z, enter YourGameArchive.7z here.
+  "ArchiveNameOverride": "YourGameArchive.7z", // <- If your archive is called YourGameArchive.7z, enter YourGameArchive.7z here."
   "CustomSteps": [
     {
       "Type": "RunMsi",
