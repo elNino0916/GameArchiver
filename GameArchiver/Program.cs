@@ -20,6 +20,7 @@ namespace GameArchiver
             ConsoleUI.WriteLineGold("Initializing GameArchiver...\n");
             // REGISTRY
             RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastRun", "STRING", DateTime.Now.ToString("u"));
+            // Generates a Policy folder for future use
             RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\Policies\GameArchiver", "Temp", "STRING", "GA");
             RegistryWorker.DeleteFromRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\Policies\GameArchiver", "Temp"); 
 
@@ -62,7 +63,8 @@ namespace GameArchiver
                 {
                     if (!TermsOfServiceService.HandleTermsOfService(installerDir, manifest, tosFile))
                     {
-                        ConsoleUI.WriteLineRed("Terms of Service not accepted. Installation cancelled.");
+                        RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "ToSDeclined");
+                        ConsoleUI.WriteLineRed("You need to accept the Terms of Service to continue. Installation cancelled.");
                         Console.WriteLine();
                         Console.WriteLine("Press any key to exit...");
                         Console.ReadKey(intercept: true);
@@ -75,6 +77,7 @@ namespace GameArchiver
 
                 // Verify integrity
                 ConsoleUI.WriteSection("VERIFYING INTEGRITY");
+                RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "VERIFY");
                 ConsoleUI.RunWithSpinner("Computing SHA-256...", () =>
                 {
                     VerificationService.VerifySha256(files.ArchivePath, files.HashPath);
@@ -83,6 +86,7 @@ namespace GameArchiver
 
                 // Install
                 ConsoleUI.WriteSection("INSTALLING");
+                RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "INSTALL");
                 Directory.CreateDirectory(installDir);
 
                 // Extract with progress (handle password if needed)
@@ -95,6 +99,7 @@ namespace GameArchiver
                 string? manualDest = null;
                 if (manifest.ManualExists && files.ManualPath != null)
                 {
+                    RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "ManualCopy");
                     manualDest = Path.Combine(installDir, Path.GetFileName(files.ManualPath));
                     File.Copy(files.ManualPath, manualDest, overwrite: true);
                 }
@@ -102,6 +107,7 @@ namespace GameArchiver
                 // Copy requirements folder if found
                 if (!string.IsNullOrEmpty(requirementsFolder))
                 {
+                    RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "RequirementsCopy");
                     string requirementsDest = Path.Combine(installDir, "requirements");
                     ConsoleUI.RunWithSpinner("Copying requirements folder...", () =>
                     {
@@ -112,6 +118,7 @@ namespace GameArchiver
                 // Copy Terms of Service if exists
                 if (tosFile != null)
                 {
+                    RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "ToSCopy");
                     string tosDest = Path.Combine(installDir, Path.GetFileName(tosFile));
                     File.Copy(tosFile, tosDest, overwrite: true);
                 }
@@ -122,6 +129,7 @@ namespace GameArchiver
                 if (manifest.CustomSteps != null && manifest.CustomSteps.Count > 0)
                 {
                     ConsoleUI.WriteSection("CUSTOM STEPS");
+                    RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "CustomSteps");
                     CustomStepsService.ExecuteCustomSteps(manifest.CustomSteps, installDir);
                 }
 
@@ -150,7 +158,7 @@ namespace GameArchiver
                 {
                     ConsoleUI.WriteLineRed($"{manifest.MainExeName} not found at: {mainExeFullPath}");
                 }
-                RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "PASS");
+                RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "DONE");
                 ConsoleUI.WriteLineGold("\nAll done.");
                 Console.WriteLine();
                 Console.WriteLine("Press any key to exit...");
@@ -160,6 +168,7 @@ namespace GameArchiver
             }
             catch (Exception ex)
             {
+                RegistryWorker.WriteToRegistry(@"HKEY_CURRENT_USER\Software\elNino0916\GameArchiver", "LastStatus", "STRING", "FAIL");
                 ConsoleUI.WriteLineRed("\nFAILED:");
                 Console.ResetColor();
                 Console.WriteLine(ex.Message);
