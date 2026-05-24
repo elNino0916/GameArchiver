@@ -19,7 +19,7 @@ namespace GameArchiver.Services
 
         public static void Extract7zWithProgress(string archivePath, string destDir, string? password = null)
         {
-            SetLibraryPath("7za.dll");
+            SetLibraryPath("x64\\7z.dll");
             using var extractor = string.IsNullOrEmpty(password)
                 ? new SevenZipExtractor(archivePath)
                 : new SevenZipExtractor(archivePath, password);
