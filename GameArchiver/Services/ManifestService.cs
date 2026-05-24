@@ -33,7 +33,7 @@ namespace GameArchiver.Services
             }
 
             string manifestPath = manifestFiles[0];
-            ConsoleUI.WriteLineGold($"Loading manifest: {Path.GetFileName(manifestPath)}\n");
+            ConsoleUI.WriteLineGold($"Parsing manifest: {Path.GetFileName(manifestPath)}\n");
 
             string json = File.ReadAllText(manifestPath);
 

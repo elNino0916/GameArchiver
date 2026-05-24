@@ -25,6 +25,8 @@ namespace GameArchiver.Services
             {
                 if (IsInternetAvailable())
                 {
+                    Console.WriteLine($"Press any key to open the terms of service.");
+                    Console.ReadKey();
                     Console.WriteLine($"Opening: {manifest.TermsOfServiceWebSrc}");
                     FileOperations.OpenUrl(manifest.TermsOfServiceWebSrc!);
                 }

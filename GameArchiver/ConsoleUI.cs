@@ -82,16 +82,23 @@ namespace GameArchiver
             Exception? ex = null;
 
             var worker = new Thread(() =>
-            {
-                try { action(); }
-                catch (Exception e) { ex = e; }
-                finally { done.Set(); }
-            })
-            { IsBackground = true };
+                {
+                    try { action(); }
+                    catch (Exception e) { ex = e; }
+                    finally { done.Set(); }
+                })
+                { IsBackground = true };
 
             worker.Start();
 
-            var spinner = new[] { '?', '?', '?', '?', '?', '?', '?', '?' };
+            // Braille spinner (GitHub-safe / modern terminal-safe)
+            var spinner = new[]
+            {
+                '⠋', '⠙', '⠹', '⠸',
+                '⠼', '⠴', '⠦', '⠧',
+                '⠇', '⠏'
+            };
+
             int i = 0;
 
             while (!done.IsSet)
@@ -100,22 +107,29 @@ namespace GameArchiver
                 Console.Write($"\r{spinner[i++ % spinner.Length]} ");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(message + "   ");
+
                 Thread.Sleep(80);
             }
 
-            Console.Write("\r   " + new string(' ', message.Length + 6) + "\r");
+            Console.Write("\r" + new string(' ', message.Length + 6) + "\r");
 
-            if (ex != null) throw ex;
+            if (ex != null)
+                throw ex;
         }
 
         public static void DrawProgressBar(int percent)
         {
             const int width = 40;
             int filled = (percent * width) / 100;
-            string bar = new string('?', filled) + new string('?', width - filled);
+
+            // Safer Unicode characters
+            string bar =
+                new string('█', filled) +
+                new string('░', width - filled);
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write($"\r[{bar}] ");
+
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write($"{percent.ToString(CultureInfo.InvariantCulture),3}%");
         }

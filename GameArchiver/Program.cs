@@ -12,7 +12,7 @@ namespace GameArchiver
 
         static int Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.Unicode;
             ConsoleUI.SetConsoleTheme();
             Console.Title = "GameArchiver";
             Console.Clear();
